@@ -1,10 +1,10 @@
-import os
-import peewee as pw
 import datetime
+import os
+
+import peewee as pw
 from playhouse.postgres_ext import PostgresqlExtDatabase
 
-# 
-db = PostgresqlExtDatabase(os.getenv('DATABASE'))
+db = PostgresqlExtDatabase(os.getenv('DATABASE', 'inventory_management_dev'))
 
 class BaseModel(pw.Model):
     created_at = pw.DateTimeField(default=datetime.datetime.now)

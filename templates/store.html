@@ -1,0 +1,32 @@
+{% extends "_layout.html" %} 
+
+{% block content %} 
+
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} 
+
+{% for category, message in messages %}
+<div class="mt-3 alert alert-{{ category }}">{{ message }}</div>
+
+{% endfor %} {% endif %} {% endwith %}
+
+<div class="mt-3">
+  <h1>Store</h1>
+</div>
+<form action="{{ url_for('create') }}">
+  <div class="form-group">
+    <label for="store_name">Add a store</label>
+    <input
+      type="text"
+      class="form-control"
+      id="store-input"
+      name="store_name"
+      placeholder="Enter store name"
+    />
+    <small id="small-text" class="form-text text-muted"
+      >Relax and add a store</small
+    >
+  </div>
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+{% endblock %}
