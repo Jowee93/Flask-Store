@@ -1,3 +1,4 @@
+import peeweedbevolve
 from flask import Flask, render_template, request
 from models import db
 
@@ -11,6 +12,11 @@ def before_request():
 def after_request(response):
    db.close()
    return response
+
+# This allows user to run migrate via flask shell
+@app.cli.command()
+def migrate():
+    db.evolve(ignore_tables={'base_model'})
 
 @app.route("/")
 def index():
