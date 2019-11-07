@@ -21,29 +21,85 @@ def migrate():
 
 @app.route("/")
 def index():
-    store_name = request.args.get('store_name')
-    return render_template('index.html', store_name=store_name)
+    return render_template('index.html')
 
 @app.route("/store")
 def store():
     return render_template('store.html')
 
-@app.route("/store_form")
-def create():
-    # Stores input from form with name = store_name, into class Store to create a new class Store
-    
-    s = Store(name=request.args.get("store_name"))
-    
-    # Adds added store to database. Flash is a function to display message. Needs a secret key
-    if s.save():
-        flash(f"Successfully added store: {s.name}", "success")
+@app.route("/store_form", methods=['GET', 'POST'])
+def create_store():
+    # If form is requested via POST, then server side should use request.form (from body of request).
+    # If form is request via GET, then server sid should use request.args (from URL of request)
+    if request.method == 'POST':
+        # Stores input from form with name = store_name, into class Store to create a new class Store
+        s = Store(name=request.form.get("store_name"))
         
-        # Redirect is used after a post request / form submission, this to prevent double submission
-        return redirect(url_for('store'))
+        # Adds added store to database. Flash is a function to display message. Needs a secret key
+        if s.save():
+            flash(f"Successfully added store: {s.name}", "success")
+            
+            # Redirect is used after a post request / form submission, this to prevent double submission
+            return redirect(url_for('store'))
+        else:
+            # If fail to save, okay to render_template as not submission went through
+            return render_template('store.html', name=request.form.get("store_name"))   
+        
     else:
-        # If fail to save, okay to render_template as not submission went through
-        return render_template('store.html', name=request.args.get("store_name"))    
+        # Stores input from form with name = store_name, into class Store to create a new class Store
+        s = Store(name=request.args.get("store_name"))
+        
+        # Adds added store to database. Flash is a function to display message. Needs a secret key
+        if s.save():
+            flash(f"Successfully added store: {s.name}", "success")
+            
+            # Redirect is used after a post request / form submission, this to prevent double submission
+            return redirect(url_for('store'))
+        else:
+            # If fail to save, okay to render_template as not submission went through
+            return render_template('store.html', name=request.args.get("store_name"))  
+        
+        
+@app.route("/warehouse")
+def warehouse():
+    stores = Store.select()
+    all_stores = [Store.name for Store in stores]
+    return render_template('warehouse.html', store=stores)
+
+@app.route("/warehouse_form", methods=['GET', 'POST'])
+def create_warehouse():
     
+    
+    # If form is requested via POST, then server side should use request.form (from body of request).
+    # If form is request via GET, then server sid should use request.args (from URL of request)
+    if request.method == 'POST':
+        # Stores input from form with name = store_name, into class Store to create a new class Store
+        w = Warehouse(location=request.form.get("warehouse_name"))
+        
+        # Adds added store to database. Flash is a function to display message. Needs a secret key
+        if w.save():
+            flash(f"Successfully added store: {w.name}", "success")
+            
+            # Redirect is used after a post request / form submission, this to prevent double submission
+            return redirect(url_for('warehouse'))
+        else:
+            # If fail to save, okay to render_template as not submission went through
+            return render_template('warehouse.html', location=request.form.get("warehouse_name"))   
+        
+    else:
+        # Stores input from form with name = store_name, into class Store to create a new class Store
+        w = Warehouse(location=request.args.get("warehouse_name"))
+        
+        # Adds added store to database. Flash is a function to display message. Needs a secret key
+        if w.save():
+            flash(f"Successfully added warehouse: {w.name}", "success")
+            
+            # Redirect is used after a post request / form submission, this to prevent double submission
+            return redirect(url_for('warehouse'))
+        else:
+            # If fail to save, okay to render_template as not submission went through
+            return render_template('warehouse.html', location=request.args.get("warehouse_name"))  
+            
 
 if __name__ == '__main__':
     app.run()
