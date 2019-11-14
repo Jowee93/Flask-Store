@@ -1,0 +1,23 @@
+{% extends "_layout.html" %} {% block content %}
+
+<table class="table mt-3">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Store Name</th>
+      <th scope="col">Number of Warehouse(s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for warehouse in warehouse_store%}
+    <tr>
+      <th scope="row">{{ warehouse.id }}</th>
+      <td>{{ warehouse.store.name }}</td>
+      <td></td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

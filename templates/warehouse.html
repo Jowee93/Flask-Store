@@ -16,17 +16,17 @@ message in messages %}
       class="form-control"
       id="warehouse-input"
       name="warehouse_name"
-      placeholder="Enter warehouse name"
+      placeholder="Enter warehouse location"
     />
     <small id="small-text" class="form-text text-muted"
       >Relax and add a warehouse</small
     >
   </div>
   <div class="form-group">
-    <select id="stores" class="form-control">
+    <select name="store_id" id="stores-selection" class="form-control">
       <option disabled selected value>-- select store --</option>
       {% for store in stores %}
-      <option>{{ store }}</option>
+      <option value="{{ store.id }}">{{ store.name }}</option>
       {% endfor %}
     </select>
   </div>
